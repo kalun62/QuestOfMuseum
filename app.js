@@ -19,52 +19,37 @@ fetch('https://script.googleusercontent.com/macros/echo?user_content_key=suXHj9U
 	})
 	.then((response) => {
 		const questAppend = () => {
-			i > response.questions.length ?
-				finale() :
-				questTextOrImage()
+			i > response.questions.length
+				? finale()
+				: questTextOrImage()
 		}
 
-		function questTextOrImage() {
-			if (response.questions[i - 1].quest.includes('http')) {
-				const toDataURL = url => fetch(url)
-					.then(response => response.blob())
-					.then(blob => new Promise((resolve, reject) => {
-						const reader = new FileReader()
-						reader.onloadend = () => resolve(reader.result)
-						reader.onerror = reject
-						reader.readAsDataURL(blob)
-					}))
-
-
-				toDataURL(response.questions[i - 1].quest)
-					.then(dataUrl => {
-						console.log('RESULT:', dataUrl)
-					})
-					
+		function questTextOrImage (){
+			if(response.questions[i-1].quest.includes('http') || response.questions[i-1].quest.includes('base64')){
 				wrap.innerHTML = `
 					<div class="quest"><img src="${response.questions[i-1].quest}" type="image/jpeg"></div>
 					<input type="text" placeholder="Ваш ответ"></input>
 					`
 				step.innerText = `Шаг ${i} из ${response.questions.length}`
 				app.append(button)
-			} else {
+			}else{
 				wrap.innerHTML = `
 				<div class="quest">${response.questions[i-1].quest}</div>
 				<input type="text" placeholder="Ваш ответ"></input>
 				`,
-					step.innerText = `Шаг ${i} из ${response.questions.length}`,
-					app.append(button)
+			step.innerText = `Шаг ${i} из ${response.questions.length}`,
+			app.append(button)
 			}
-
-			console.log(response.questions[i - 1].quest);
+			
+				console.log(response.questions[i-1].quest);
 		}
 
 		function validate() {
 			const input = document.querySelector('input')
 
-			input.value.toLowerCase() != response.questions[i - 1].answer.toLowerCase() ?
-				input.classList.add('error') :
-				(input.classList.remove('error'), i++, questAppend())
+			input.value.toLowerCase() != response.questions[i - 1].answer.toLowerCase() 
+				? input.classList.add('error') 
+				: (input.classList.remove('error'), i++, questAppend())
 		}
 
 		function finale() {
