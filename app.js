@@ -3,7 +3,8 @@
 const app = document.querySelector('.app'),
 	wrap = document.createElement('div'),
 	step = document.createElement('span'),
-	button = document.createElement('button')
+	button = document.createElement('button'),
+	errorLabel = document.createElement('label')
 
 let i = 1
 
@@ -13,47 +14,59 @@ button.innerText = 'Далее'
 
 app.append(step, wrap)
 
-fetch('https://script.googleusercontent.com/macros/echo?user_content_key=suXHj9Ummr2jDROwph5s4E3Gi8IikegGVvz3SsFnx6gFq7Fj4TfsZQwT4RAMZ0KGStX6t0plmZaspQuTZsgimNvKHfYyc0Qdm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDTFaET6z9-YEMfFTPppN6O1C2e24W9DRS2TW99wJQpp-zWDEApzKaNr5aH3h9-9fg7D4DXj5yFt37x8auI8zOKV-cstmj6tCw&lib=MvEp0Mq_unqvbcetyDtqhMZTzWPfVHIZP')
+fetch('https://script.google.com/macros/s/AKfycbwZhmLmaU5PojWJKZPmqbSJZ4FNiiaT8d70-7rCGHtzFwaidZH9_uW3b6H7E9_sS4vY/exec')
 	.then((response) => {
 		return response.json();
 	})
 	.then((response) => {
 		const questAppend = () => {
-			i > response.questions.length
-				? finale()
+			i > response.questions.length 
+			 	? finale() 
 				: questTextOrImage()
 		}
-
-		function questTextOrImage (){
-			if(response.questions[i-1].quest.includes('http') || response.questions[i-1].quest.includes('base64')){
+		function questTextOrImage() {
+			if (response.questions[i - 1].quest.includes('http')) {
 				wrap.innerHTML = `
-					<div class="quest"><img src="${response.questions[i-1].quest}" type="image/jpeg"></div>
-					<input type="text" placeholder="Ваш ответ"></input>
+					<div class="quest img"><img src="${response.questions[i-1].quest}" type="image/jpeg"></div>
+					<div class="descr">${response.questions[i-1].description}</div>
+					<div class="form-group">
+						<input name="ansver" type="text" placeholder="Ваш ответ"></input>
+					</div>
 					`
 				step.innerText = `Шаг ${i} из ${response.questions.length}`
 				app.append(button)
-			}else{
+			} else {
 				wrap.innerHTML = `
-				<div class="quest">${response.questions[i-1].quest}</div>
-				<input type="text" placeholder="Ваш ответ"></input>
+				<div class="quest txt">${response.questions[i-1].quest}</div>
+				<div class="form-group">
+					<input name="ansver" type="text" placeholder="Ваш ответ"></input>
+				</div>
 				`,
-			step.innerText = `Шаг ${i} из ${response.questions.length}`,
-			app.append(button)
+				step.innerText = `Шаг ${i} из ${response.questions.length}`,
+				app.append(button)
 			}
-			
-				console.log(response.questions[i-1].quest);
 		}
-
+		
+		function errorLabels(input) {
+			if(input.classList.contains('error')){
+				errorLabel.setAttribute('for', 'ansver')
+				errorLabel.classList.add('label')
+				errorLabel.innerHTML = `Не правильный ответ, попробуй еще`
+				input.after(errorLabel)
+			}else{
+				errorLabel.remove()
+			}
+		}
 		function validate() {
 			const input = document.querySelector('input')
-
+			
 			input.value.toLowerCase() != response.questions[i - 1].answer.toLowerCase() 
-				? input.classList.add('error') 
+				? (input.classList.add('error'), errorLabels(input)) 
 				: (input.classList.remove('error'), i++, questAppend())
 		}
 
 		function finale() {
-			app.innerHTML = `Ты Молодец`
+			app.innerHTML = `<div class="final">Ты Молодец!!!</div>`
 			button.removeEventListener('click', validate)
 		}
 

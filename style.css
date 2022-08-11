@@ -1,28 +1,95 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap');
 
-*{
+* {
 	margin: 0;
 	padding: 0;
 	outline: none;
 	box-sizing: border-box;
 }
-body{
+
+body {
 	font-family: 'Raleway', sans-serif;
 }
-.app{
+
+.app {
 	position: relative;
 	width: 100%;
 	height: 100vh;
 	text-align: center;
+
 }
-.step{
-	position: relative;
-	right: 10px;
-	top: 0;
-}
-.app__wrapper{
+
+.app__wrapper {
 	width: 100%;
 }
-.error{
-	background-color: red;
+
+.step {
+	display: block;
+	margin-top: 10px;
+	color: #818080;
+}
+
+.error {
+	border: 1px dashed red;
+}
+
+.label {
+	display: block;
+	color: red;
+	margin: -20px 0 10px 0;
+}
+
+input {
+	margin-bottom: 20px;
+	width: 80%;
+	padding: 5px 10px;
+	border-radius: 2px;
+}
+
+.quest.txt {
+	width: 80%;
+	text-align: center;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	height: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.quest.img {
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.descr{
+	margin-bottom: 10px;
+}
+
+img {
+	width: 100%;
+}
+
+button {
+	padding: 4px 30px;
+	background-color: black;
+	color: white;
+	border-radius: 5px;
+}
+
+button:hover {
+	filter: invert(100);
+}
+.final{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: red;
+	font-size: 24px;
 }
