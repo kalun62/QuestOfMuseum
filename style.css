@@ -54,7 +54,7 @@ input {
 	margin: 0 auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	height: 400px;
+	height: 300px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -79,6 +79,7 @@ button {
 	background-color: black;
 	color: white;
 	border-radius: 5px;
+	margin-bottom: 50px;
 }
 
 button:hover {
